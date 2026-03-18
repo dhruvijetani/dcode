@@ -20,18 +20,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pyinstaller
-          pip install anthropic
+          pip install pyinstaller anthropic
 
       - name: Build Windows EXE
         run: |
-          pyinstaller --onefile --windowed --name "DCode" dcode.py
+          pyinstaller --onefile --windowed --name DCode dcode.py
 
       - name: Upload Windows EXE
         uses: actions/upload-artifact@v4
         with:
           name: DCode-Windows
           path: dist/DCode.exe
+
 
   build-mac:
     runs-on: macos-latest
@@ -45,22 +45,23 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pyinstaller
-          pip install anthropic
+          pip install pyinstaller anthropic
 
       - name: Build Mac App
         run: |
-          pyinstaller --onefile --windowed --name "DCode" dcode.py
+          pyinstaller --onefile --windowed --name DCode dcode.py
 
       - name: Zip Mac App
         run: |
-          cd dist && zip -r DCode-Mac.zip DCode
+          cd dist
+          zip -r DCode-Mac.zip DCode
 
       - name: Upload Mac App
         uses: actions/upload-artifact@v4
         with:
           name: DCode-Mac
           path: dist/DCode-Mac.zip
+
 
   build-linux:
     runs-on: ubuntu-latest
@@ -74,19 +75,20 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pyinstaller
-          pip install anthropic
+          pip install pyinstaller anthropic
+          sudo apt-get update
           sudo apt-get install -y python3-tk
 
       - name: Build Linux Binary
         run: |
-          pyinstaller --onefile --name "DCode" dcode.py
+          pyinstaller --onefile --name DCode dcode.py
 
       - name: Upload Linux Binary
         uses: actions/upload-artifact@v4
         with:
           name: DCode-Linux
           path: dist/DCode
+
 
   release:
     needs: [build-windows, build-mac, build-linux]
@@ -117,19 +119,8 @@ jobs:
             | Linux | DCode | chmod +x DCode → ./DCode |
 
             ## Features
-            - 12+ language syntax highlighting
-            - Claude AI — explain, fix, generate
-            - Voice-to-code input
-            - Code snippets library
-            - Real Python execution
+            - AI code explain
+            - Fix errors
+            - Generate code
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
----
-
-### Step 3 — Commit karo
-```
-"Commit changes" green button click karo
-Message: Add GitHub Actions build workflow
-→ Commit!
